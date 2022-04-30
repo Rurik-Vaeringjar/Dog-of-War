@@ -38,11 +38,14 @@ async def on_message(message):
 	if message.author == bot.user:
 		return
 	
-	if message.channel.name == "new-members-tag-assignment":
+	if message.channel.id == 834565569180991488:
 		await rolecaller(message)
 		
-	if message.channel.name == "hll-admin-log" and message.author.name == "Hook of War":
-		await modify_webhook(message)
+	if message.channel.id == 968889649428848650 and message.author.name == "Hook of War":
+		await modify_log_webhook(message)
+
+	if message.channel.id == 968984419828375662 and message.author.name == "Hook of War":
+		await modify_help_webhook(message)
 
 	#REACTION TESTING
 	#if message.channel.name == 'bot-spam':
@@ -51,6 +54,7 @@ async def on_message(message):
 
 	await bot.process_commands(message)
 
+#-------------------------------------------------------------------------------------------------------- rolecaller
 async def rolecaller(message):
 	rolegiven = False
 	msg = message.content
@@ -109,7 +113,8 @@ async def rolecaller(message):
 		else:
 			await message.reply("No.", mention_author=False)
 
-async def modify_webhook(message):
+#-------------------------------------------------------------------------------------------------------- modify_log_webhook
+async def modify_log_webhook(message):
 	msg = message.content
 
 	msg = msg.replace("[MERC] -US WEST L.A Discord.GG/m3rc", "```ini\n[US WEST]")
@@ -125,5 +130,31 @@ async def modify_webhook(message):
 
 	log(f"LOG: {msg}")
 
+#-------------------------------------------------------------------------------------------------------- modify_help_webhook
+async def modify_help_webhook(message):
+	msg = message.content
+
+	if ", -JesusUncuT-:" in msg:
+		await message.delete()
+		return
+	elif ", Compton:" in msg:
+		await message.delete()
+		return
+	elif ", cidi:" in msg:
+		await message.delete()
+		return
+
+	msg = msg.replace("[MERC] -US WEST L.A Discord.GG/m3rc", "US WEST")
+	msg = msg.replace("[MERC] - US EAST D.C. Discord.GG/m3rc", "US EAST")
+	msg = msg.replace("!adminhelp", "")
+	msg = msg.replace("!ADMINHELP", "")	
+	msg = msg.replace("!admin", "")
+
+	msg = "<@&693723013459476491> " + msg
+
+	await message.channel.send(msg)
+	await message.delete()
+
+	log(f"LOG: {msg}")
 
 bot.run(TOKEN)
