@@ -38,12 +38,15 @@ async def on_message(message):
 	if message.author == bot.user:
 		return
 	
-	if message.channel.id == 834565569180991488:
+	#new-members-tag-assignment
+	if message.channel.id == 834565569180991488: 
 		await rolecaller(message)
 		
+	#hll-admin-log
 	if message.channel.id == 968889649428848650 and message.author.name == "Hook of War":
 		await modify_log_webhook(message)
 
+	#hll-admin-ping
 	if message.channel.id == 968984419828375662 and message.author.name == "Hook of War":
 		await modify_help_webhook(message)
 
