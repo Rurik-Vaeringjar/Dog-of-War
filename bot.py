@@ -64,47 +64,33 @@ async def rolecaller(message):
 	msg = msg.lower()
 
 	if "hll" in msg or "hell let loose" in msg:
-		role = discord.utils.get(message.guild.roles, name="Hll")
-		await message.author.add_roles(role)
-		await message.add_reaction("<:hll:969397971865182218>")
-		log(f"UPD: {message.author} given {role}")
+		if (await give_role(message, 820820382197743639)):
+			await message.add_reaction("<:hll:969397971865182218>")
 
 	if "tbc" in msg or "wow" in msg or "world of warcraft" in msg:
-		role = discord.utils.get(message.guild.roles, name="World of Warcraft")
-		await message.author.add_roles(role)
-		await message.add_reaction("<:wow:969397993675554856>")
-		log(f"UPD: {message.author} given {role}")
+		if (await give_role(message, 965436847616589885)):
+			await message.add_reaction("<:wow:969397993675554856>")
 
-	if "lost ark" in msg or msg.startswith("ark") or " ark " in msg:
-		role = discord.utils.get(message.guild.roles, name="Lost Ark")
-		await message.author.add_roles(role)
-		await message.add_reaction("<:ark:969401546565615717>")
-		log(f"UPD: {message.author} given {role}")
+	if "lost ark" in msg or msg.startswith("ark") or " ark " in msg or " ark," in msg:
+		if (await give_role(message, 822006223099396156)):
+			await message.add_reaction("<:ark:969401546565615717>")
 
 	if "new world" in msg:
-		role = discord.utils.get(message.guild.roles, name="New World")
-		await message.author.add_roles(role)
-		rolegiven = True
-		log(f"UPD: {message.author} given {role}")
+		if (await give_role(message, 844697336595742721)):
+			rolegiven = True
 
 	if "valheim" in msg or "valhiem" in msg:
-		role = discord.utils.get(message.guild.roles, name="Valheim")
-		await message.author.add_roles(role)
-		rolegiven = True
-		log(f"UPD: {message.author} given {role}")
+		if (await give_role(message, 757176232801468477)):
+			rolegiven = True
 
 	if "arma" in msg:
-		role = discord.utils.get(message.guild.roles, name="Arma 3")
-		await message.author.add_roles(role)
-		rolegiven = True
-		log(f"UPD: {message.author} given {role}")
+		if (await give_role(message, 823332560087679007)):
+			rolegiven = True
 
 	if "foxhole" in msg:
-		role = discord.utils.get(message.guild.roles, name="FoxHole")
-		await message.author.add_roles(role)
-		rolegiven = True
-		log(f"UPD: {message.author} given {role}")
-
+		if(await give_role(message, 693723031482269766)):
+			rolegiven = True
+		
 	if rolegiven:
 		await message.add_reaction("\U0001f44d")
 
@@ -116,6 +102,16 @@ async def rolecaller(message):
 		else:
 			await message.reply("No.", mention_author=False)
 
+async def give_role(message, id) -> bool:
+	role = discord.utils.get(message.guild.roles, id=id)
+	if role and role not in message.author.roles:
+		await message.author.add_roles(role)
+		log(f"UPD: {message.author} given {role}")
+		return True
+	return False
+
+
+
 #-------------------------------------------------------------------------------------------------------- modify_log_webhook
 async def modify_log_webhook(message):
 	msg = message.content
@@ -123,9 +119,13 @@ async def modify_log_webhook(message):
 	msg = msg.replace("[MERC] -US WEST L.A Discord.GG/m3rc", "```ini\n[US WEST]")
 	msg = msg.replace("[MERC] - US EAST D.C. Discord.GG/m3rc", "```css\n[US EAST]")
 	msg += "\n```"
-
-	await message.channel.send(msg)
-	await message.delete()
+	
+	try:
+		await message.channel.send(msg)
+	except:
+		log(f"ERR: Failed to format webhook, aborting delete.")
+	else:
+		await message.delete()
 	
 	msg = msg.replace("```ini\n", "")
 	msg = msg.replace("```css\n", "")
@@ -155,8 +155,12 @@ async def modify_help_webhook(message):
 
 	msg = "<@&693723013459476491> " + msg
 
-	await message.channel.send(msg)
-	await message.delete()
+	try:
+		await message.channel.send(msg)
+	except:
+		log(f"ERR: Failed to format webhook, aborting delete.")
+	else:
+		await message.delete()
 
 	log(f"LOG: {msg}")
 
