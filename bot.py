@@ -147,7 +147,7 @@ async def modify_help_webhook(message):
 	msg = message.content
 
 	#deletes admin pings from admins
-	admin_list = ["Compton", "cidi", "-JesusUncut-", "Ruri,"]
+	admin_list = ["Compton", "cidi", "-JesusUncut-", "Ruri"]
 	for admin in admin_list:
 		if f", {admin}:" in msg:
 			await message.delete()
