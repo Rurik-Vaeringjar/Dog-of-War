@@ -147,15 +147,11 @@ async def modify_help_webhook(message):
 	msg = message.content
 
 	#deletes admin pings from admins
-	if ", -JesusUncuT-:" in msg:
-		await message.delete()
-		return
-	elif ", Compton:" in msg:
-		await message.delete()
-		return
-	elif ", cidi:" in msg:
-		await message.delete()
-		return
+	admin_list = ["Compton", "cidi", "-JesusUncut-", "Ruri,"]
+	for admin in admin_list:
+		if f", {admin}:" in msg:
+			await message.delete()
+			return
 
 	#formats the incoming ping, removing uneccessary information
 	msg = msg.replace("[MERC] -US WEST L.A Discord.GG/m3rc", "US WEST")
