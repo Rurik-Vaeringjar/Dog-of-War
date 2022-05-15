@@ -36,7 +36,7 @@ class Merciless(commands.Cog):
 		#role given: "Squad"
 		if "squad" in msg:
 			if (await self.give_role(message, 834881859770384395)):
-				rolegiven = True
+				await message.add_reaction("<:squad:975121515513274418>")
 
 		#role given: "World of Warcraft"
 		if "tbc" in msg or "wow" in msg or "world of warcraft" in msg:
@@ -116,9 +116,9 @@ class Merciless(commands.Cog):
 		msg = message.content
 
 		#deletes !admin pings from admins
-		admin_list = ["Compton", "cidi", "-JesusUncut-", "Ruri"]
+		admin_list = ["Compton", "cidi", "JesusUncuT", "-JesusUncuT-", "Ruri"]
 		for admin in admin_list:
-			if f", {admin}:" in msg:
+			if f"{admin}:" in msg:
 				await message.delete()
 				return
 
