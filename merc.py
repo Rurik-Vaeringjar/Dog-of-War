@@ -10,7 +10,7 @@ class Merciless(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
-		#new-members-tag-assignment
+		#role-request
 		if message.channel.id == 834565569180991488: 
 			await self.rolecaller(message)
 		
@@ -116,7 +116,7 @@ class Merciless(commands.Cog):
 		msg = message.content
 
 		#deletes !admin pings from admins
-		admin_list = ["Compton", "cidi", "JesusUncuT", "-JesusUncuT-", "Ruri"]
+		admin_list = ["Compton", "cidi", "JesusUncuT", "-JesusUncuT-", "Ruri", "cHoPsTiX"]
 		for admin in admin_list:
 			if f"{admin}:" in msg:
 				await message.delete()
