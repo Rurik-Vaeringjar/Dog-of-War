@@ -14,6 +14,7 @@ from battlemetrics import BattleMetrics
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
+BMTOKEN = os.getenv("BMTOKEN")
 
 intents = discord.Intents.default()
 intents.members = True
@@ -47,9 +48,12 @@ async def on_message(message):
 		#await message.add_reaction("\U0001f44d")
 		#log(f"UPD: Reacted to message in bot-spam")
 
-	await bot.process_commands(message)
+	try:
+		await bot.process_commands(message)
+	except:
+		log("ERR: Something went wrong with process_commands")
 
 bot.add_cog(Merciless(bot))
-bot.add_cog(BattleMetrics(bot))
+bot.add_cog(BattleMetrics(bot, BMTOKEN))
 
 bot.run(TOKEN)

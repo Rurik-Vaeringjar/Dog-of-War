@@ -7,9 +7,17 @@ class Merciless(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		self._last_member = None
+		self.id_list = []
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
+		if message.author == self.bot.user:
+			return
+
+		if not message.guild:
+			if "nicknuke" in message.content:
+				await self.nick_nuke(message)
+
 		#role-request
 		if message.channel.id == 834565569180991488: 
 			await self.rolecaller(message)
@@ -21,6 +29,19 @@ class Merciless(commands.Cog):
 		#hll-admin-ping
 		if message.channel.id == 968984419828375662 and message.author.name == "Hook of War":
 			await self.modify_help_webhook(message)
+
+	#-------------------------------------------------------------------------------------------------------- nicknuke
+	async def nick_nuke(self, message):
+		id = message.author.id
+		if id in self.id_list:
+			self.id_list.remove(id)
+			await message.channel.send("I will stop preventing your nickname from being changed on servers we share.")
+			log(f"UPD: {message.author.name} ({message.author.id}) removed from nicknuke list via DM.")
+		else:
+			self.id_list.append(id)
+			await message.channel.send("I will prevent your nickname from being changed on servers we share.")
+			log(f"UPD: {message.author.name} ({message.author.id}) added to nicknuke list via DM.")
+
 
 	#-------------------------------------------------------------------------------------------------------- rolecaller
 	async def rolecaller(self, message):
@@ -140,4 +161,33 @@ class Merciless(commands.Cog):
 
 		log(f"LOG: {msg}")
 
-	
+
+	@commands.Cog.listener()
+	async def on_member_update(self, before, after):
+		
+		for id in self.id_list:
+			if after.id == id:
+				if after.nick:
+					await after.edit(nick=None)
+
+	@commands.command(name="nicknuke", hidden=True)
+	async def nickname_nuke(self, ctx, *args):
+		id = ctx.author.id
+		if id in self.id_list:
+			self.id_list.remove(id)
+			await ctx.send("Your nickname can be changed now", delete_after=3.0)
+			log(f"UPD: {ctx.author.name} ({ctx.author.id}) removed from nicknuke list via command.")
+		else:
+			self.id_list.append(id)
+			await ctx.send("Your nickname can no longer be changed", delete_after=3.0)
+			log(f"UPD: {ctx.author.name} ({ctx.author.id}) added to nicknuke list via command.")
+			
+		await ctx.message.delete()
+
+	@commands.command(name="clearnicknuke", hidden=True)
+	@commands.has_permissions(administrator=True)
+	async def clear_nickname_nuke(self, ctx):
+		self.id_list = []
+		await ctx.send("nicknuke list cleared.", delete_after=3.0)
+		log(f"UPD: Nicknuke list cleared by administrator {ctx.author.name} ({ctx.author.id}).")
+		await ctx.message.delete()
