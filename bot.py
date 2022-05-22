@@ -39,9 +39,21 @@ async def on_connect():
 		log(f"NET: {bot.user} has connected to Discord")
 
 @bot.event
+async def on_command_error(ctx, error):
+	if isinstance(error, commands.CommandNotFound):
+		return
+	raise error
+
+@bot.event
 async def on_message(message):
 	if message.author == bot.user:
 		return
+
+
+	delete = False
+	msg = message.content 
+	if msg.startswith(f"{cmd}servers") or msg.startswith(f"{cmd}nicknuke") or msg.startswith(f"{cmd}clearnicknuke"):
+		delete = True
 
 	#REACTION TESTING
 	#if message.channel.name == 'bot-spam':
@@ -52,6 +64,10 @@ async def on_message(message):
 		await bot.process_commands(message)
 	except:
 		log("ERR: Something went wrong with process_commands")
+
+	if delete:
+		await message.delete()
+
 
 bot.add_cog(Merciless(bot))
 bot.add_cog(BattleMetrics(bot, BMTOKEN))
