@@ -69,6 +69,11 @@ class Merciless(commands.Cog):
 			if (await self.give_role(message, 822006223099396156)):
 				await message.add_reaction("<:ark:969401546565615717>")
 
+		#role given: "V-rising"
+		if "v-rising" in msg or "v rising" in msg or "vrising" in msg:
+			if (await self.give_role(message, 978189792049242132)):
+				await message.add_reaction("<:vrising:978287390030430208>")
+
 		#role given: "New World" (gives the yellow one, check if that is the right role later)
 		if "new world" in msg:
 			if (await self.give_role(message, 844697336595742721)):
@@ -181,7 +186,7 @@ class Merciless(commands.Cog):
 			self.id_list.append(id)
 			await ctx.send("Your nickname can no longer be changed", delete_after=3.0)
 			log(f"UPD: {ctx.author.name} ({ctx.author.id}) added to nicknuke list via command.")
-			
+		
 		await ctx.message.delete()
 
 	@commands.command(name="clearnicknuke", hidden=True)

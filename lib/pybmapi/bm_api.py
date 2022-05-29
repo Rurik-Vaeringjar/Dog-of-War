@@ -1,14 +1,11 @@
 from . import session
 
 class bm_api(object):
-	server = "https://api.battlemetrics.com/"
+	server = "https://api.battlemetrics.com"
 
 	def __init__(self, token):
 		self.token = token
-		headers = CaseInsensitiveDict()
-		headers["Accept"] = "application/json"
-		headers["Authorization"] = "Bearer {token}".format(token=self.token)
-		self.headers = headers#{"Accept": "application/json", "Authorization": "Bearer {token}".format(token=self.token)}
+		self.headers = {"Accept": "application/json", "Authorization": "Bearer {token}".format(token=self.token)}
 
 	def get_server_info(self, id):
 		path = "{server}/servers/{id}".format(server=self.server, id=id)

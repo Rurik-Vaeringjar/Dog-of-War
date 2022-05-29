@@ -49,11 +49,10 @@ async def on_message(message):
 	if message.author == bot.user:
 		return
 
-
-	delete = False
+	#delete = False
 	msg = message.content 
-	if msg.startswith(f"{cmd}servers") or msg.startswith(f"{cmd}nicknuke") or msg.startswith(f"{cmd}clearnicknuke"):
-		delete = True
+	#if msg == f"{cmd}servers" or msg.startswith(f"{cmd}nicknuke") or msg.startswith(f"{cmd}clearnicknuke"):
+	#	delete = True
 
 	#REACTION TESTING
 	#if message.channel.name == 'bot-spam':
@@ -65,8 +64,8 @@ async def on_message(message):
 	except:
 		log("ERR: Something went wrong with process_commands")
 
-	if delete:
-		await message.delete()
+	#if delete:
+	#	await message.delete()
 
 
 bot.add_cog(Merciless(bot))
