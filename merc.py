@@ -91,8 +91,8 @@ class Merciless(commands.Cog):
 
 		#role given: "FoxHole"
 		if "foxhole" in msg:
-			if(await self.give_role(message, 693723031482269766)):
-				rolegiven = True
+			if (await self.give_role(message, 983830851441799218)): # 983830851441799218
+				await message.add_reaction("<:foxhole:985934949708341248>")
 
 		#Thumbs up if role specific reaction not available
 		if rolegiven:
