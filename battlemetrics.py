@@ -9,21 +9,22 @@ class BattleMetrics(commands.Cog):
 		self.token = token
 
 	@commands.command(name="servers", help="Get information about Merciless' HLL Servers")
-	async def get_server_info(self, ctx, arg=None):
-		#14757084 [Merc] US EAST
-		#15120335 [Merc] US WEST
+	async def get_servers_info(self, ctx, arg=None):
+		#15792455 [Merc] US EAST NYC
+		#15859120 [Merc] US EAST DC
+		#15120335 [Merc] US WEST LA
 
 		time = 30.0
 		if arg == "sticky":
 			time = None
 
 		bmapi = bm_api(self.token)
-		servers = [bmapi.get_server_info(14757084), bmapi.get_server_info(15120335)]	
+		servers = [bmapi.get_server_info(15792455), bmapi.get_server_info(15859120), bmapi.get_server_info(15120335)]	
 		embeds = []
 		for server in servers:
 			attr = server['data']['attributes']
 			id_ = attr['id']
-			name = "[MERC] - US EAST D.C" if "US EAST" in attr['name'] else "[MERC] - US WEST L.A."
+			name = "[MERC] - US EAST NYC" if "US East NYC" in attr['name'] else "[MERC] - US EAST DC" if "US East D.C" in attr['name'] else "[MERC] - US WEST L.A."
 			ip = attr['ip']
 			players = attr['players']
 			max_players = attr['maxPlayers']
@@ -44,6 +45,9 @@ class BattleMetrics(commands.Cog):
 		if time:
 			await ctx.message.delete()
 		
+	@commands.command(name='server', hidden=True)
+	async def get_server_info(self, ctx, arg=None):
+		await self.get_servers_info(ctx, arg)
 
 	@commands.command(name="test", hidden=True)
 	async def test_func(self, ctx):

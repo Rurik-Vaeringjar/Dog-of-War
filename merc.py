@@ -119,8 +119,9 @@ class Merciless(commands.Cog):
 		msg = message.content
 
 		#Formats the server name and adds coloration via code blocks
-		msg = msg.replace("[MERC] -US WEST L.A Discord.GG/m3rc", "```ini\n[US WEST]")
-		msg = msg.replace("[MERC] - US EAST D.C. Discord.GG/m3rc", "```css\n[US EAST]")
+		msg = msg.replace("[MERC] -US WEST L.A Discord.GG/m3rc", "```ini\n[US WEST] (LA)")
+		msg = msg.replace("[MERC] US East NYC Discord.GG/m3rc", "```css\n[US EAST] (NYC)")
+		msg = msg.replace("[Merc] US East D.C  Discord.gg/m3rc", "```css\n[US EAST] (DC)")
 		msg += "\n```"
 		
 		try:
@@ -149,10 +150,11 @@ class Merciless(commands.Cog):
 				return
 
 		#formats the incoming ping, removing uneccessary information
-		msg = msg.replace("[MERC] -US WEST L.A Discord.GG/m3rc", "US WEST")
-		msg = msg.replace("[MERC] - US EAST D.C. Discord.GG/m3rc", "US EAST")
+		msg = msg.replace("[MERC] -US WEST L.A Discord.GG/m3rc", "US WEST (LA)")
+		msg = msg.replace("[MERC] US East NYC Discord.GG/m3rc", "US EAST (NYC)")
+		msg = msg.replace("[Merc] US East D.C  Discord.gg/m3rc", "US EAST (DC)")
 		msg = msg.replace("!adminhelp", "")
-		msg = msg.replace("!ADMINHELP", "")	
+		msg = msg.replace("!ADMINHELP", "")
 		msg = msg.replace("!admin", "")
 
 		msg_with_mention = "<@&693723013459476491> " + msg
