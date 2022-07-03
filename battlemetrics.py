@@ -33,7 +33,7 @@ class BattleMetrics(commands.Cog):
 			link = "https://www.battlemetrics.com/servers/hll/" + id_
 
 			embed = discord.Embed(title=name, url=link)
-			embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/832367939021570079/975743305138716682/unknown.png")
+			embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/928443722222415894/993221521927569548/Merc_Logo_Transparent.png")
 			embed.add_field(name="IP", value=ip, inline=True)
 			if time:
 				embed.add_field(name="Map", value=map, inline=True)

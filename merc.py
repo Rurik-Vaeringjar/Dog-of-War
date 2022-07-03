@@ -74,6 +74,11 @@ class Merciless(commands.Cog):
 			if (await self.give_role(message, 978189792049242132)):
 				await message.add_reaction("<:vrising:978287390030430208>")
 
+		#role given: "Tarkov"
+		if "tarkov" in msg:
+			if (await self.give_role(message, 985266644928561182)):
+				rolegiven = True
+
 		#role given: "New World" (gives the yellow one, check if that is the right role later)
 		if "new world" in msg:
 			if (await self.give_role(message, 844697336595742721)):
