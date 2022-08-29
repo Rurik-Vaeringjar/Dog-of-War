@@ -10,7 +10,6 @@ class BattleMetrics(commands.Cog):
 
 	@commands.command(name="servers", help="Get information about Merciless' HLL Servers")
 	async def get_servers_info(self, ctx, arg=None):
-		#15792455 [Merc] US EAST NYC
 		#15859120 [Merc] US EAST DC
 		#15120335 [Merc] US WEST LA
 
@@ -19,7 +18,7 @@ class BattleMetrics(commands.Cog):
 			time = None
 
 		bmapi = bm_api(self.token)
-		servers = [bmapi.get_server_info(15792455), bmapi.get_server_info(15859120), bmapi.get_server_info(15120335)]	
+		servers = [bmapi.get_server_info(15859120), bmapi.get_server_info(15120335)]	
 		embeds = []
 		for server in servers:
 			attr = server['data']['attributes']
