@@ -18,9 +18,10 @@ class Merciless(commands.Cog):
 			if "nicknuke" in message.content:
 				await self.nick_nuke(message)
 
+		#DEPRECIATED#
 		#role-request
-		if message.channel.id == 834565569180991488: 
-			await self.rolecaller(message)
+		#if message.channel.id == 834565569180991488: 
+		#	await self.rolecaller(message)
 		
 		#hll-admin-log
 		if message.channel.id == 968889649428848650 and message.author.name == "Hook of War":
@@ -44,6 +45,7 @@ class Merciless(commands.Cog):
 
 
 	#-------------------------------------------------------------------------------------------------------- rolecaller
+	'''DEPRECIATED!
 	async def rolecaller(self, message):
 		rolegiven = False
 		msg = message.content
@@ -118,15 +120,16 @@ class Merciless(commands.Cog):
 			await message.author.add_roles(role)
 			log(f"UPD: {message.author} given {role}")
 			return True
-		return False#-------------------------------------------------------------------------------------------------------- modify_log_webhook
-
+		return False
+	'''	
+	
+	#-------------------------------------------------------------------------------------------------------- modify_log_webhook
 	async def modify_log_webhook(self, message):
 		msg = message.content
 
 		#Formats the server name and adds coloration via code blocks
-		msg = msg.replace("[MERC] -US WEST L.A Discord.GG/m3rc", "```ini\n[US WEST] (LA)")
-		msg = msg.replace("[MERC] US East NYC Discord.GG/m3rc", "```css\n[US EAST] (NYC)")
-		msg = msg.replace("[Merc] US East D.C  Discord.gg/m3rc", "```css\n[US EAST] (DC)")
+		msg = msg.replace("[MERC] -US WEST L.A Discord.GG/m3rc", "```ini\n[US WEST]")
+		msg = msg.replace("[Merc] US East D.C  Discord.gg/m3rc", "```css\n[US EAST]")
 		msg += "\n```"
 		
 		try:
@@ -147,22 +150,15 @@ class Merciless(commands.Cog):
 	async def modify_help_webhook(self, message):
 		msg = message.content
 
-		#deletes !admin pings from admins
-		admin_list = ["Compton", "cidi", "JesusUncuT", "-JesusUncuT-", "Ruri", "cHoPsTiX"]
-		for admin in admin_list:
-			if f"{admin}:" in msg:
-				await message.delete()
-				return
-
 		#formats the incoming ping, removing uneccessary information
-		msg = msg.replace("[MERC] -US WEST L.A Discord.GG/m3rc", "US WEST (LA)")
-		msg = msg.replace("[MERC] US East NYC Discord.GG/m3rc", "US EAST (NYC)")
-		msg = msg.replace("[Merc] US East D.C  Discord.gg/m3rc", "US EAST (DC)")
+		msg = msg.replace("[MERC] -US WEST L.A Discord.GG/m3rc", "US WEST")
+		msg = msg.replace("[Merc] US East D.C  Discord.gg/m3rc", "US EAST")
 		msg = msg.replace("!adminhelp", "")
 		msg = msg.replace("!ADMINHELP", "")
 		msg = msg.replace("!admin", "")
+		msg = msg.replace("!ADMIN", "")
 
-		msg_with_mention = "<@&693723013459476491> " + msg
+		msg_with_mention = "<@&1014526441179861022> " + msg
 
 		try:
 			await message.channel.send(msg_with_mention)
