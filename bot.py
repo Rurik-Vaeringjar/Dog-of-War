@@ -47,4 +47,8 @@ async def on_command_error(ctx, error):
 bot.add_cog(Merciless(bot))
 bot.add_cog(BattleMetrics(bot, BMTOKEN))
 
+@bot.command(name='status', hidden=True)
+async def status(ctx):
+	await ctx.send("200")
+
 bot.run(TOKEN)

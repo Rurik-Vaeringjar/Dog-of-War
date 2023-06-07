@@ -113,7 +113,7 @@ class Merciless(commands.Cog):
 				await message.reply("Ah ah ah, you didn't say the magic word!", mention_author=False)
 			else:
 				await message.reply("No.", mention_author=False)
-
+	
 	async def give_role(self, message, id) -> bool:
 		role = discord.utils.get(message.guild.roles, id=id)
 		if role and role not in message.author.roles:
@@ -121,8 +121,7 @@ class Merciless(commands.Cog):
 			log(f"UPD: {message.author} given {role}")
 			return True
 		return False
-	'''	
-	
+	'''
 	#-------------------------------------------------------------------------------------------------------- modify_log_webhook
 	async def modify_log_webhook(self, message):
 		msg = message.content
@@ -158,7 +157,7 @@ class Merciless(commands.Cog):
 		msg = msg.replace("!admin", "")
 		msg = msg.replace("!ADMIN", "")
 
-		msg_with_mention = "<@&1014526441179861022> " + msg
+		msg_with_mention = "<@&1098116700920090704> " + msg
 
 		try:
 			await message.channel.send(msg_with_mention)
@@ -169,7 +168,6 @@ class Merciless(commands.Cog):
 
 		log(f"LOG: {msg}")
 
-
 	@commands.Cog.listener()
 	async def on_member_update(self, before, after):
 		
@@ -177,6 +175,49 @@ class Merciless(commands.Cog):
 			if after.id == id:
 				if after.nick:
 					await after.edit(nick=None)
+
+	#Open Mic Knight on Merc = 1114692562553413632
+	#Merc = 653042329938034739
+	@commands.Cog.listener()
+	async def on_member_join(self, member):
+		if member.guild.id == 653042329938034739:
+			role = discord.utils.get(member.guild.roles, id=1114692562553413632)
+			if role and role not in member.roles:
+				await member.add_roles(role)
+				log(f"UPD: {member.name} joined {member.guild.name}, automatically assigned {role.name}")
+			else:
+				log(f"UPD: {member.name} joined {member.guild.name}, already assigned {role.name}")
+
+	@commands.command(name="knighthood", hidden=True)
+	async def open_mic_knighthood(self, ctx):
+		if not ctx.message.author.guild_permissions.administrator:
+			return
+		
+		await ctx.send("Beginning update. Warning: this may take some time...")
+		num_updated = 0
+		for guild in self.bot.guilds:
+			if ctx.guild.id == 653042329938034739:
+				role = discord.utils.get(guild.roles, id=1114692562553413632)
+				for member in guild.members:
+					if role and role not in member.roles:
+						await member.add_roles(role)
+						num_updated = num_updated + 1
+						log(f"UPD: {member.name} given {role.name} in {guild.name}.")
+		if num_updated:
+			log(f"LOG: Finished updating {num_updated} members in {ctx.guild.name}")
+			await ctx.send(f"Finished updating {num_updated} members.")
+		else:
+			log(f"LOG: Knighthood found no knaves...")
+			await ctx.send("It appears everyone is a knight already.")
+
+	async def give_role(self, member, id) -> bool:
+		role = discord.utils.get(member.guild.roles, id=id)
+		if role and role not in member.roles:
+			await member.add_roles(role)
+			log(f"UPD: {message.author} given {role}")
+			return True
+		return False	
+
 
 	@commands.command(name="nicknuke", hidden=True)
 	async def nickname_nuke(self, ctx, *args):
