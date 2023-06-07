@@ -177,11 +177,19 @@ class Merciless(commands.Cog):
 					await after.edit(nick=None)
 
 	#Open Mic Knight on Merc = 1114692562553413632
+	#Member on Merc = 697529828282335272
 	#Merc = 653042329938034739
 	@commands.Cog.listener()
 	async def on_member_join(self, member):
 		if member.guild.id == 653042329938034739:
 			role = discord.utils.get(member.guild.roles, id=1114692562553413632)
+			if role and role not in member.roles:
+				await member.add_roles(role)
+				log(f"UPD: {member.name} joined {member.guild.name}, automatically assigned {role.name}")
+			else:
+				log(f"UPD: {member.name} joined {member.guild.name}, already assigned {role.name}")
+			
+			role = discord.utils.get(member.guild.roles, id=697529828282335272)
 			if role and role not in member.roles:
 				await member.add_roles(role)
 				log(f"UPD: {member.name} joined {member.guild.name}, automatically assigned {role.name}")
