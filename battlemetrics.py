@@ -18,12 +18,12 @@ class BattleMetrics(commands.Cog):
 			time = None
 
 		bmapi = bm_api(self.token)
-		servers = [bmapi.get_server_info(15859120), bmapi.get_server_info(15120335)]	
-		embeds = []
+		servers = [bmapi.get_server_info(15120335), bmapi.get_server_info(20356074), bmapi.get_server_info(16850007)]	
+
 		for server in servers:
 			attr = server['data']['attributes']
 			id_ = attr['id']
-			name = "[MERC] - US EAST NYC" if "US East NYC" in attr['name'] else "[MERC] - US EAST DC" if "US East D.C" in attr['name'] else "[MERC] - US WEST L.A."
+			name = "[MERC] - US WEST #1" if "1" in attr['name'] else "[MERC] - US WEST #2" if "2" in attr['name'] else "[MERC] - US EAST"
 			ip = attr['ip']
 			players = attr['players']
 			max_players = attr['maxPlayers']

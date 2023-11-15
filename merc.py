@@ -1,4 +1,5 @@
 import discord
+import re
 from discord.ext import commands
 
 from tools.useful_functions import log
@@ -127,8 +128,9 @@ class Merciless(commands.Cog):
 		msg = message.content
 
 		#Formats the server name and adds coloration via code blocks
-		msg = msg.replace("[MERC] -US WEST L.A Discord.GG/m3rc", "```ini\n[US WEST]")
-		msg = msg.replace("[Merc] US East D.C  Discord.gg/m3rc", "```css\n[US EAST]")
+		msg = msg.replace("[MERC] #1 US WEST L.A Discord.GG/m3rc", "```ini\n[US WEST #1]")
+		msg = msg.replace("[MERC] #2 US WEST L.A Discord.GG/m3rc", "```css\n[US WEST #2]")
+		msg = msg.replace("[Merc] U.S East  Event/Training Server", "```\n[US EAST]")
 		msg += "\n```"
 		
 		try:
@@ -148,25 +150,46 @@ class Merciless(commands.Cog):
 	#-------------------------------------------------------------------------------------------------------- modify_help_webhook
 	async def modify_help_webhook(self, message):
 		msg = message.content
+		mention = True
 
+		msg.rstrip()
+		if msg.endswith(">!admin<"):
+			mention = False
+		
+		info = msg.split("+|+")
+		
+		url = info[2]#re.search('\((.+?)\)', msg).group(0)
+		name = info[1]#re.search(',(.+?)\(', msg).group(0)
 		#formats the incoming ping, removing uneccessary information
-		msg = msg.replace("[MERC] -US WEST L.A Discord.GG/m3rc", "US WEST")
-		msg = msg.replace("[Merc] US East D.C  Discord.gg/m3rc", "US EAST")
-		msg = msg.replace("!adminhelp", "")
-		msg = msg.replace("!ADMINHELP", "")
-		msg = msg.replace("!admin", "")
+		'''msg = msg.replace("!admin", "")
 		msg = msg.replace("!ADMIN", "")
+		msg = msg.replace("[MERC] #1 US WEST L.A Discord.GG/m3rc,", "[US WEST #1]")
+		msg = msg.replace("[MERC] #2 US WEST L.A Discord.GG/m3rc,", "[US WEST #2]")
+		msg = msg.replace("[Merc] U.S East  Event/Training Server,", "[US EAST]")'''
+		server = info[0]#re.search('\[(.+?)\]', msg).group(0)
+		server = server.replace("[MERC] #1 US WEST L.A Discord.GG/m3rc", "[US WEST #1]")
+		server = server.replace("[MERC] #2 US WEST L.A Discord.GG/m3rc", "[US WEST #2]")
+		server = server.replace("[Merc] U.S East  Event/Training Server", "[US EAST]")
+		
+		content = info[3]#re.search('>(.+?)<', msg).group(0)
+		content = content.replace("!ADMIN", "")
+		content = content.replace("!admin", "")
+		content = content.replace("!Admin", "")
+		
+		embed = discord.Embed(title=name, url=url, description=content)
+		embed.set_footer(text=server)
 
-		msg_with_mention = "<@&1098116700920090704> " + msg
 
+		if mention:
+			msg = "<@&1098116700920090704>"# + msg
 		try:
-			await message.channel.send(msg_with_mention)
+			await message.channel.send(msg, embed=embed)
 		except:
 			log(f"ERR: Failed to format webhook, aborting delete.")
 		else:
 			await message.delete()
 
-		log(f"LOG: {msg}")
+		log(f"LOG: {server}: {name}: {content}")
 
 	@commands.Cog.listener()
 	async def on_member_update(self, before, after):
