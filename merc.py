@@ -127,6 +127,8 @@ class Merciless(commands.Cog):
 	async def modify_log_webhook(self, message):
 		msg = message.content
 
+
+
 		#Formats the server name and adds coloration via code blocks
 		msg = msg.replace("[MERC] #1 US WEST L.A Discord.GG/m3rc", "```ini\n[US WEST #1]")
 		msg = msg.replace("[MERC] #2 US WEST L.A Discord.GG/m3rc", "```css\n[US WEST #2]")
@@ -151,37 +153,32 @@ class Merciless(commands.Cog):
 	async def modify_help_webhook(self, message):
 		msg = message.content
 		mention = True
-
-		msg.rstrip()
-		if msg.endswith(">!admin<"):
-			mention = False
 		
-		info = msg.split("+|+")
+		info = msg.split("|")
 		
-		url = info[2]#re.search('\((.+?)\)', msg).group(0)
-		name = info[1]#re.search(',(.+?)\(', msg).group(0)
-		#formats the incoming ping, removing uneccessary information
-		'''msg = msg.replace("!admin", "")
-		msg = msg.replace("!ADMIN", "")
-		msg = msg.replace("[MERC] #1 US WEST L.A Discord.GG/m3rc,", "[US WEST #1]")
-		msg = msg.replace("[MERC] #2 US WEST L.A Discord.GG/m3rc,", "[US WEST #2]")
-		msg = msg.replace("[Merc] U.S East  Event/Training Server,", "[US EAST]")'''
-		server = info[0]#re.search('\[(.+?)\]', msg).group(0)
+		server = info[0]
 		server = server.replace("[MERC] #1 US WEST L.A Discord.GG/m3rc", "[US WEST #1]")
 		server = server.replace("[MERC] #2 US WEST L.A Discord.GG/m3rc", "[US WEST #2]")
 		server = server.replace("[Merc] U.S East  Event/Training Server", "[US EAST]")
+
+		name = info[1]
+
+		url = info[2]
 		
-		content = info[3]#re.search('>(.+?)<', msg).group(0)
+		content = info[3]
 		content = content.replace("!ADMIN", "")
 		content = content.replace("!admin", "")
 		content = content.replace("!Admin", "")
+		content = content.rstrip()
+		if content.lower().endswith("!admin"):
+			mention = False
 		
 		embed = discord.Embed(title=name, url=url, description=content)
 		embed.set_footer(text=server)
 
 
 		if mention:
-			msg = "<@&1098116700920090704>"# + msg
+			msg = "<@&1098116700920090704>"
 		try:
 			await message.channel.send(msg, embed=embed)
 		except:
@@ -211,13 +208,17 @@ class Merciless(commands.Cog):
 				log(f"UPD: {member.name} joined {member.guild.name}, automatically assigned {role.name}")
 			else:
 				log(f"UPD: {member.name} joined {member.guild.name}, already assigned {role.name}")
-			
-			role = discord.utils.get(member.guild.roles, id=697529828282335272)
-			if role and role not in member.roles:
-				await member.add_roles(role)
-				log(f"UPD: {member.name} joined {member.guild.name}, automatically assigned {role.name}")
-			else:
-				log(f"UPD: {member.name} joined {member.guild.name}, already assigned {role.name}")
+
+			#Member	
+			await self.give_role(member, 697529828282335272)
+
+	async def give_role(member, role_id):
+		role = discord.utils.get(member.guild.roles, id=role_id)
+		if role and role not in member.roles:
+			await member.add_roles(role)
+			log(f"UPD: {member.name} joined {member.guild.name}, automatically assigned {role.name}")
+		else:
+			log(f"UPD: {member.name} joined {member.guild.name}, already assigned {role.name}")
 
 	@commands.command(name="knighthood", hidden=True)
 	async def open_mic_knighthood(self, ctx):
@@ -241,13 +242,14 @@ class Merciless(commands.Cog):
 			log(f"LOG: Knighthood found no knaves...")
 			await ctx.send("It appears everyone is a knight already.")
 
+	'''
 	async def give_role(self, member, id) -> bool:
 		role = discord.utils.get(member.guild.roles, id=id)
 		if role and role not in member.roles:
 			await member.add_roles(role)
 			log(f"UPD: {message.author} given {role}")
 			return True
-		return False	
+		return False	'''
 
 
 	@commands.command(name="nicknuke", hidden=True)
