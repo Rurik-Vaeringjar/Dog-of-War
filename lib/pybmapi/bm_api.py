@@ -9,6 +9,6 @@ class bm_api(object):
 
 	def get_server_info(self, id):
 		path = "{server}/servers/{id}".format(server=self.server, id=id)
-		response = session.get(path, headers=self.headers)
+		response = session.get(path, headers=self.headers, timeout=1.0)
 
 		return response.json()

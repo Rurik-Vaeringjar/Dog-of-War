@@ -18,7 +18,7 @@ class BattleMetrics(commands.Cog):
 			time = None
 
 		bmapi = bm_api(self.token)
-		servers = [bmapi.get_server_info(15120335), bmapi.get_server_info(20356074), bmapi.get_server_info(16850007)]	
+		servers = [bmapi.get_server_info(15120335), bmapi.get_server_info(24342618), bmapi.get_server_info(16850007)]	
 
 		for server in servers:
 			attr = server['data']['attributes']
@@ -32,12 +32,12 @@ class BattleMetrics(commands.Cog):
 			link = "https://www.battlemetrics.com/servers/hll/" + id_
 
 			embed = discord.Embed(title=name, url=link)
-			embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/928443722222415894/993221521927569548/Merc_Logo_Transparent.png")
+			embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/928443722222415894/1174499183978360982/image.png")
 			embed.add_field(name="IP", value=ip, inline=True)
 			if time:
 				embed.add_field(name="Map", value=map, inline=True)
 				embed.add_field(name="Players", value=f"{players}/{max_players}", inline=True)
-			embed.add_field(name="Direct Connect Here", value=f"steam://connect/{ip}:{queryport}", inline=False)		
+			#embed.add_field(name="_ _", value=f"[Direct Connect Here](steam://connect/{ip}:{queryport})", inline=False)		
 
 			await ctx.send(embed=embed, delete_after=time)
 		

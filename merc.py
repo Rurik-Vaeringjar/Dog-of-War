@@ -127,12 +127,14 @@ class Merciless(commands.Cog):
 	async def modify_log_webhook(self, message):
 		msg = message.content
 
-
-
 		#Formats the server name and adds coloration via code blocks
 		msg = msg.replace("[MERC] #1 US WEST L.A Discord.GG/m3rc", "```ini\n[US WEST #1]")
 		msg = msg.replace("[MERC] #2 US WEST L.A Discord.GG/m3rc", "```css\n[US WEST #2]")
-		msg = msg.replace("[Merc] U.S East  Event/Training Server", "```\n[US EAST]")
+		msg = msg.replace("[Merc] U.S East Event Server Discord.GG/m3rc", "```\n[US EAST]")
+		msg = msg.replace("Discord.GG/m3rc", "")
+		msg = msg.replace("Discord.gg/m3rc", "")
+		if not msg.startswith("```"):
+			msg = "```" + msg
 		msg += "\n```"
 		
 		try:
@@ -143,9 +145,10 @@ class Merciless(commands.Cog):
 			await message.delete()
 		
 		#removes code block coloration for logging
-		msg = msg.replace("```ini\n", "")
-		msg = msg.replace("```css\n", "")
-		msg = msg.replace("\n```", "")
+		msg = msg.replace("ini", "")
+		msg = msg.replace("css", "")
+		msg = msg.replace("\n", "")
+		msg = msg.replace("```", "")
 
 		log(f"LOG: {msg}")
 
@@ -153,32 +156,51 @@ class Merciless(commands.Cog):
 	async def modify_help_webhook(self, message):
 		msg = message.content
 		mention = True
-		
-		info = msg.split("|")
-		
+		suspect = False
+
+		if msg.startswith("SUSPECT:"):
+			suspect = True
+			msg = msg.replace("SUSPECT:", "")
+
+		info = msg.split("+|+")
 		server = info[0]
 		server = server.replace("[MERC] #1 US WEST L.A Discord.GG/m3rc", "[US WEST #1]")
 		server = server.replace("[MERC] #2 US WEST L.A Discord.GG/m3rc", "[US WEST #2]")
-		server = server.replace("[Merc] U.S East  Event/Training Server", "[US EAST]")
+		server = server.replace("[Merc] #3 US WEST LA Discord.gg/m3rc", "[US WEST #3]")
+		server = server.replace("[Merc] #4 US EAST D.C Discord.gg/m3rc", "[US EAST]")
+		server = server.replace("[Merc] U.S East Event Server Discord.GG/m3rc", "[EVENT]")
+		server = server.replace("[MERC] #1 Central Discord.gg/m3rc", "[POST SCRIPTUM #1]")
+		
+		server = server.replace("Discord.GG/m3rc", "")
+		server = server.replace("Discord.gg/m3rc", "")
 
 		name = info[1]
 
 		url = info[2]
 		
-		content = info[3]
-		content = content.replace("!ADMIN", "")
-		content = content.replace("!admin", "")
-		content = content.replace("!Admin", "")
-		content = content.rstrip()
-		if content.lower().endswith("!admin"):
-			mention = False
+		content = "**SUSPECT WARNING!**"
+		if not suspect:
+			content = info[3]
+			content = content.replace("!ADMIN", "")
+			content = content.replace("!admin", "")
+			content = content.replace("!Admin", "")
+			content = content.rstrip()
+			if content == "":
+				mention = False
 		
-		embed = discord.Embed(title=name, url=url, description=content)
+			lc_content = content.lower()
+			if lc_content.endswith("!admin"):
+				mention = False
+		
+		embed = discord.Embed(title=name, url=url, description=content, color=discord.Color.red() if suspect else discord.Color.dark_grey())
 		embed.set_footer(text=server)
+		#Merc Thumbnail = https://cdn.discordapp.com/attachments/928443722222415894/1174499183978360982/image.png
+		embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/928443722222415894/1174499183978360982/image.png")
 
-
+		msg = ""
 		if mention:
-			msg = "<@&1098116700920090704>"
+			msg = "<@&1180720126740398080>" if server == "[POST SCRIPTUM #1]" else "<@&1098116700920090704>"
+
 		try:
 			await message.channel.send(msg, embed=embed)
 		except:
@@ -212,7 +234,7 @@ class Merciless(commands.Cog):
 			#Member	
 			await self.give_role(member, 697529828282335272)
 
-	async def give_role(member, role_id):
+	async def give_role(self, member, role_id):
 		role = discord.utils.get(member.guild.roles, id=role_id)
 		if role and role not in member.roles:
 			await member.add_roles(role)
