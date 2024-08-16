@@ -1,0 +1,12 @@
+__pycache__/
+tools/__pycache__/
+*.py[cod]
+
+lib/*
+!lib/pybmapi
+venv/
+
+*.log
+*.txt
+*.env
+*.old

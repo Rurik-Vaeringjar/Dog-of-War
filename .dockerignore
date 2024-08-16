@@ -1,0 +1,5 @@
+event.log
+.git
+__pycache__/
+venv/
+*.old
